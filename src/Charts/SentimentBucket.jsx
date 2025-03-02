@@ -9,10 +9,15 @@ const SentimentBucket = ({ sentimentData, setSentimentData }) => {
     setSentimentData(updatedData);
   };
 
-  const handleRemoveData = (index) => {
-    const updatedData = sentimentData.filter((_, i) => i !== index);
+  const handleRemoveData = (itemToRemove) => {
+    const updatedData = sentimentData.filter((item) => item !== itemToRemove);
     setSentimentData(updatedData);
   };
+
+  // Categorize the sentimentData into NEGATIVE, NEUTRAL, POSITIVE
+  const negativeData = sentimentData.filter(item => item.label === "NEGATIVE");
+  const neutralData = sentimentData.filter(item => item.label === "NEUTRAL");
+  const positiveData = sentimentData.filter(item => item.label === "POSITIVE");
 
   return (
     <div className="sentiment-bucket">
@@ -37,14 +42,42 @@ const SentimentBucket = ({ sentimentData, setSentimentData }) => {
         </div>
         <button onClick={handleAddData} className="add-btn">Add Data</button>
       </div>
-      <ul className="sentiment-list">
-        {sentimentData.map((item, index) => (
-          <li key={index} className="sentiment-item">
-            {item.label}: {item.score.toFixed(2)}
-            <button onClick={() => handleRemoveData(index)} className="remove-btn">Remove</button>
-          </li>
-        ))}
-      </ul>
+
+      {/* Sentiment data categorized into three columns */}
+      <div className="sentiment-columns">
+        {/* Negative Column */}
+        <div className="sentiment-column">
+          <h4>NEGATIVE</h4>
+          {negativeData.map((item, index) => (
+            <div key={index} className="sentiment-item">
+              {item.label}: {item.score.toFixed(2)}
+              <button onClick={() => handleRemoveData(item)} className="remove-btn">Remove</button>
+            </div>
+          ))}
+        </div>
+
+        {/* Neutral Column */}
+        <div className="sentiment-column">
+          <h4>NEUTRAL</h4>
+          {neutralData.map((item, index) => (
+            <div key={index} className="sentiment-item">
+              {item.label}: {item.score.toFixed(2)}
+              <button onClick={() => handleRemoveData(item)} className="remove-btn">Remove</button>
+            </div>
+          ))}
+        </div>
+
+        {/* Positive Column */}
+        <div className="sentiment-column">
+          <h4>POSITIVE</h4>
+          {positiveData.map((item, index) => (
+            <div key={index} className="sentiment-item">
+              {item.label}: {item.score.toFixed(2)}
+              <button onClick={() => handleRemoveData(item)} className="remove-btn">Remove</button>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };

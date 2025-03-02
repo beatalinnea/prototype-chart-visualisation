@@ -10,7 +10,7 @@ import SentimentBucket from "./SentimentBucket";
 const Container = () => {
   const [sentiment, setSentiment] = useState(null);
   const [score, setScore] = useState(0);
-  const [showSentimentControls, setShowSentimentControls] = useState(true);
+  const [showSentimentControls, setShowSentimentControls] = useState(false);
   const [sentimentData, setSentimentData] = useState([{ label: "NEGATIVE", score: 0.8 },
     { label: "POSITIVE", score: 0.3 },
     { label: "NEUTRAL", score: 0.5 },
