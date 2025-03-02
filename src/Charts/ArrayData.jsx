@@ -47,17 +47,17 @@ const StackedBarChart = () => {
       {
         label: 'Low Certainty (0-0.5)',
         data: scoresByLabel.map(scores => scores.filter(score => score <= 0.5).length),
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        backgroundColor: sentimentLabels.map(label => getColor(label, 0.5)),
       },
       {
         label: 'Medium Certainty (0.5-0.7)',
         data: scoresByLabel.map(scores => scores.filter(score => score > 0.5 && score <= 0.7).length),
-        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+        backgroundColor: sentimentLabels.map(label => getColor(label, 0.7)),
       },
       {
         label: 'High Certainty (0.7-1.0)',
         data: scoresByLabel.map(scores => scores.filter(score => score > 0.7).length),
-        backgroundColor: 'rgba(75, 192, 192, 0.5)',
+        backgroundColor: sentimentLabels.map(label => getColor(label, 1.0)),
       },
     ],
   };
@@ -65,7 +65,6 @@ const StackedBarChart = () => {
   const options = {
     responsive: true,
     plugins: {
-      legend: { position: 'top' },
       title: { display: true, text: 'Stacked Bar Chart - Sentiment Certainty' },
     },
     scales: { x: { stacked: true }, y: { stacked: true } },
@@ -73,6 +72,7 @@ const StackedBarChart = () => {
 
   return <Bar data={data} options={options} />;
 };
+
 
 const GroupedBarChart = () => {
   const certaintyBins = [
