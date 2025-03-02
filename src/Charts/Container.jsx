@@ -4,6 +4,9 @@ import BarChartComponent from "./BarChartComponent";
 import PieChartComponent from "./PieChartComponent";
 import ScatterChart from "./SentimentScatterChart";
 import RadarChart from "./RadarChartComponent";
+import { StackedBarChart } from "./ArrayData";
+import { GroupedBarChart } from "./ArrayData";
+import { HistogramForCertaintyDistribution } from "./ArrayData";
 
 const Container = () => {
   const [sentiment, setSentiment] = useState(null); // Sentiment could be Positive, Neutral, Negative
@@ -18,6 +21,11 @@ const Container = () => {
       />
 
       <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", width: "100%", maxWidth: "800px", marginTop: "30px" }}>
+        <StackedBarChart />
+        <hr style={{ border: "0.5px solidrgb(87, 87, 87)", width: "50vw"}} />
+        <GroupedBarChart />
+        <hr style={{ border: "0.5px solidrgb(87, 87, 87)", width: "50vw"}} />
+        <HistogramForCertaintyDistribution />
       <hr style={{ border: "0.5px solidrgb(87, 87, 87)", width: "50vw"}} />
         <BarChartComponent sentiment={sentiment} score={score} />
         <hr style={{ border: "0.5px solidrgb(87, 87, 87)", width: "50vw"}} />
