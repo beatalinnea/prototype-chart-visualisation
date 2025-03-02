@@ -1,26 +1,9 @@
+import { useEffect } from "react";
 import { Bar } from "react-chartjs-2";
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js";
 
 // Register the necessary Chart.js components
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
-
-const sentimentData = [
-  { label: "NEGATIVE", score: 0.8 },
-  { label: "POSITIVE", score: 0.3 },
-  { label: "NEUTRAL", score: 0.5 },
-  { label: "NEGATIVE", score: 0.9 },
-  { label: "POSITIVE", score: 0.6 },
-  { label: "NEUTRAL", score: 0.4 },
-  { label: "NEGATIVE", score: 0.7 },
-  { label: "POSITIVE", score: 0.2 },
-  { label: "NEUTRAL", score: 0.55 },
-  { label: "NEGATIVE", score: 0.85 },
-  { label: "POSITIVE", score: 0.45 },
-  { label: "NEUTRAL", score: 0.35 },
-  { label: "NEGATIVE", score: 0.95 },
-  { label: "POSITIVE", score: 0.75 },
-  { label: "NEUTRAL", score: 0.65 },
-];
 
 const sentimentLabels = ["NEGATIVE", "NEUTRAL", "POSITIVE"];
 
@@ -38,7 +21,9 @@ const getColor = (label, threshold) => {
 };
 
 
-const StackedBarChart = () => {
+const StackedBarChart = ({ sentimentData }) => {
+
+  useEffect 
   const scoresByLabel = sentimentLabels.map(label => sentimentData.filter(d => d.label === label).map(d => d.score));
 
   const data = {
@@ -74,7 +59,7 @@ const StackedBarChart = () => {
 };
 
 
-const GroupedBarChart = () => {
+const GroupedBarChart = ({ sentimentData }) => {
   const certaintyBins = [
     { label: 'Low Certainty (0-0.5)', min: 0, max: 0.5 },
     { label: 'Medium Certainty (0.5-0.7)', min: 0.5, max: 0.7 },
@@ -125,7 +110,7 @@ const GroupedBarChart = () => {
 
 
 
-const HistogramForCertaintyDistribution = () => {
+const HistogramForCertaintyDistribution = ({ sentimentData }) => {
   const bins = Array.from({ length: 10 }, (_, i) => i * 0.1);
   const labels = bins.map((bin, i) => i < bins.length - 1 ? `${bin.toFixed(1)} - ${(bins[i + 1]).toFixed(1)}` : null).filter(Boolean);
 
