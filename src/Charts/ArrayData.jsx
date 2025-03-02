@@ -24,6 +24,20 @@ const sentimentData = [
 
 const sentimentLabels = ["NEGATIVE", "NEUTRAL", "POSITIVE"];
 
+const baseColors = {
+  NEGATIVE: [255, 99, 132], // Red
+  NEUTRAL: [54, 162, 235], // Blue
+  POSITIVE: [75, 192, 132],  // Green
+};
+
+// Function to adjust color intensity based on threshold
+const getColor = (label, threshold) => {
+  const [r, g, b] = baseColors[label];
+  const intensity = threshold * 0.8 + 0.2; // Adjust intensity based on threshold
+  return `rgba(${r}, ${g}, ${b}, ${intensity})`;
+};
+
+
 const StackedBarChart = () => {
   const scoresByLabel = sentimentLabels.map(label => sentimentData.filter(d => d.label === label).map(d => d.score));
 
@@ -61,18 +75,55 @@ const StackedBarChart = () => {
 };
 
 const GroupedBarChart = () => {
-  const certaintyBins = [0.5, 0.7, 1.0];
+  const certaintyBins = [
+    { label: 'Low Certainty (0-0.5)', min: 0, max: 0.5 },
+    { label: 'Medium Certainty (0.5-0.7)', min: 0.5, max: 0.7 },
+    { label: 'High Certainty (0.7-1.0)', min: 0.7, max: 1.0 },
+  ];
+
+  const legendColors = {
+    'Low Certainty (0-0.5)': 'rgb(202, 202, 202)',
+    'Medium Certainty (0.5-0.7)': 'rgb(114, 114, 114)',
+    'High Certainty (0.7-1.0)': 'rgb(59, 59, 59)',
+  };
+
   const data = {
     labels: sentimentLabels,
-    datasets: certaintyBins.map((threshold, index) => ({
-      label: `Certainty ≤ ${threshold}`,
-      data: sentimentLabels.map(label => sentimentData.filter(d => d.label === label && d.score <= threshold).length),
-      backgroundColor: `rgba(${(index + 1) * 75}, ${(index + 2) * 50}, ${(index + 3) * 30}, 0.5)`,
+    datasets: certaintyBins.map((bin) => ({
+      label: bin.label,
+      data: sentimentLabels.map(label =>
+        sentimentData.filter(d => d.label === label && d.score > bin.min && d.score <= bin.max).length
+      ),
+      backgroundColor: sentimentLabels.map(label => getColor(label, bin.max)),
     })),
   };
 
-  return <Bar data={data} options={{ responsive: true, plugins: { title: { display: true, text: 'Grouped Bar Chart - Sentiment Certainty' } } }} />;
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        labels: {
+          generateLabels: (chart) => {
+            const { data } = chart;
+            return data.datasets.map((dataset, index) => ({
+              text: dataset.label,
+              fillStyle: legendColors[dataset.label], // Use custom legend color
+              strokeStyle: legendColors[dataset.label], // Use custom legend border color
+              hidden: false,
+              index: index,
+            }));
+          },
+        },
+      },
+      title: { display: true, text: 'Grouped Bar Chart - Sentiment Certainty' },
+    },
+    scales: { x: { stacked: false }, y: { stacked: false } },
+  };
+
+  return <Bar data={data} options={options} />;
 };
+
+
 
 const HistogramForCertaintyDistribution = () => {
   const bins = Array.from({ length: 10 }, (_, i) => i * 0.1);
