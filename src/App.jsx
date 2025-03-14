@@ -5,7 +5,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Sentiment Visualisation</h1>
+      <h1>sentimenti</h1>
       <Container />
     </div>
   );

@@ -6,6 +6,7 @@ import ScatterChart from "./SentimentScatterChart";
 import RadarChart from "./RadarChartComponent";
 import { StackedBarChart, GroupedBarChart, HistogramForCertaintyDistribution } from "./ArrayData";
 import SentimentBucket from "./SentimentBucket";
+import ScatterPlot from "./ScatterPlot";
 
 const Container = () => {
   const [sentiment, setSentiment] = useState(null);
@@ -56,6 +57,7 @@ const Container = () => {
         </>
       ) : (
         <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", width: "100%", maxWidth: "800px", marginTop: "30px" }}>
+          <ScatterPlot sentimentData={sentimentData}></ScatterPlot>
           <SentimentBucket sentimentData={sentimentData} setSentimentData={setSentimentData} />
           <StackedBarChart sentimentData={sentimentData} />
           <hr style={{ border: "0.5px solid rgb(87, 87, 87)", width: "50vw" }} />
